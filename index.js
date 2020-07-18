@@ -1,6 +1,12 @@
+// Steps
+// 1 - import redux, logger , 2 - create a store, logger , 3 - use store, logger
+
 const redux = require("redux");
+const reduxLogger = require("redux-logger");
 const createStore = redux.createStore;
+const logger = reduxLogger.createLogger();
 const combineReducer = redux.combineReducers;
+const applyMiddleWare = redux.applyMiddleware;
 
 // Cake Shop Example where Number_of_Cakes is a state , the shopkeeper (reducer) is the reducer function ,
 // and BUY_CAKE is the action.
@@ -96,11 +102,9 @@ const rootReducer = combineReducer({
   cake: cakeReducer,
   iceCream: iceCreamReducer,
 });
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleWare(logger));
 //console.log("Intitial inventory", store.getState());
-const unsubscribe = store.subscribe(() =>
-  console.log("Updated inventory ", store.getState())
-);
+const unsubscribe = store.subscribe(() => {});
 store.dispatch(buyIceCream());
 store.dispatch(buyCake());
 store.dispatch(buyCake());
