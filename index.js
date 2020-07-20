@@ -13,6 +13,7 @@ const applyMiddleWare = redux.applyMiddleware;
 
 const BUY_CAKE = "BUY_CAKE"; //action constant
 const BUY_ICECREAM = "BUY_ICECREAM";
+const BUY_PASTRIES = "BUY_PASTRIES";
 
 //Action Creator
 
@@ -25,6 +26,12 @@ function buyCake() {
 function buyIceCream() {
   return {
     type: BUY_ICECREAM,
+  };
+}
+
+function buyPastries() {
+  return {
+    type: BUY_PASTRIES,
   };
 }
 
@@ -47,6 +54,9 @@ const initialIceCreamState = {
   Number_of_IceCreams: 10,
 };
 
+const initialPasteriesState = {
+  Number_of_Pastries: 10,
+};
 //reducer function for both the states combined
 
 // const reducer = (state = initialState, action) => {
@@ -96,19 +106,34 @@ const iceCreamReducer = (state = initialIceCreamState, action) => {
   }
 };
 
+const pastryReducer = (state = initialPasteriesState, action) => {
+  switch (action.type) {
+    case BUY_PASTRIES:
+      return {
+        ...state,
+        Number_of_Pastries: state.Number_of_Pastries - 1,
+      };
+    default:
+      return state;
+  }
+};
+
 //Create Store and peform the 5 activities
 
 const rootReducer = combineReducer({
   cake: cakeReducer,
   iceCream: iceCreamReducer,
+  pastries: pastryReducer,
 });
 const store = createStore(rootReducer, applyMiddleWare(logger));
 //console.log("Intitial inventory", store.getState());
 const unsubscribe = store.subscribe(() => {});
 store.dispatch(buyIceCream());
 store.dispatch(buyCake());
+store.dispatch(buyPastries());
 store.dispatch(buyCake());
 store.dispatch(buyCake());
 store.dispatch(buyIceCream());
+store.dispatch(buyPastries());
 
 unsubscribe();
